@@ -14,20 +14,22 @@
         body {
             background: #f9f9f9;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Segoe UI', 'Comic Neue', 'Chalkboard SE', cursive;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
+            overflow: hidden;
         }
 
         /* 游戏主面板  */
         .game-board {
             position: relative;
-            width: 800px;
-            height: 800px;
-            background-image: url('底图.png');
+            width: min(100vw - 20px, 100dvh - 20px, 800px);
+            aspect-ratio: 1 / 1;
+            background-image: url('%E5%BA%95%E5%9B%BE.png');
             background-size: cover;
             background-position: center;
         }
@@ -35,25 +37,27 @@
        /* 烤盘区域 */
 .tray-area {
     position: absolute;
-  top: 100px;
-left: 50px;
-width: 700px;
-height: 580px;
-    background-image: url('烤盘.png');
+  top: 12.5%;
+left: 6.25%;
+width: 87.5%;
+height: 72.5%;
+    background-image: url('%E7%83%A4%E7%9B%98.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     pointer-events: auto;
     cursor: crosshair;
+    touch-action: none;
 }
         /* 饼干样式  */
         .cookie {
             position: absolute;
-            width: 180px;
-            height: 180px;
+            width: 22.5%;
+            height: 22.5%;
             cursor: pointer;
             transition: transform 0.2s ease, filter 0.2s ease;
             z-index: 10;
             image-rendering: crisp-edges;
+            touch-action: none;
         }
         .cookie:hover {
             transform: scale(1.05);
@@ -66,14 +70,14 @@ height: 580px;
         /* 确认摆盘按钮 */
         .confirm-btn {
             position: absolute;
-            bottom: 50px;
-            right: 50px;
+            bottom: 6.25%;
+            right: 6.25%;
             background: #ffc947;
             color: #4a2c1a;
-            padding: 16px 36px;
+            padding: 2% 4.5%;
             border: 3px solid #d4891a;
             border-radius: 8px;
-            font-size: 26px;
+            font-size: clamp(16px, 3.25vw, 26px);
             font-weight: bold;
             font-family: inherit;
             cursor: pointer;
@@ -90,10 +94,10 @@ height: 580px;
         /* 火力条外框  */
         .fire-bar-container {
             position: absolute;
-            bottom: 80px;
-            left: 70px;
-            width: 70px;
-            height: 280px;
+            bottom: 10%;
+            left: 8.75%;
+            width: 8.75%;
+            height: 35%;
             background: #5a3620;
             border-radius: 8px;
             border: 3px solid #5a3620;
@@ -156,10 +160,10 @@ height: 580px;
             visibility: hidden;
         }
         .loading-spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid #f3e5ab;
-            border-top: 8px solid #ff8000;
+            width: 10%;
+            height: 10%;
+            border: clamp(4px, 1vw, 8px) solid #f3e5ab;
+            border-top: clamp(4px, 1vw, 8px) solid #ff8000;
             border-radius: 50%;
             animation: spin 0.9s linear infinite;
         }
@@ -169,8 +173,8 @@ height: 580px;
         }
         .loading-text {
             color: #ffdd99;
-            font-size: 28px;
-            margin-top: 24px;
+            font-size: clamp(18px, 3.5vw, 28px);
+            margin-top: 3%;
             font-weight: bold;
             letter-spacing: 4px;
         }
@@ -178,34 +182,34 @@ height: 580px;
         /* 结果对话框 + 人物区 */
         .dialogue-area {
             position: absolute;
-            bottom: 100px;
+            bottom: 12.5%;
             left: 50%;
             transform: translateX(-50%);
             width: fit-content;
-            max-width: 600px;
+            max-width: 75%;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 2%;
             z-index: 25;
-            visibility: hidden;  
+            visibility: hidden;
         }
         .character {
-            width: 80px;
-            height: 80px;
+            width: 10%;
+            aspect-ratio: 1 / 1;
             background: #f0d8a0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: clamp(24px, 6vw, 48px);
             flex-shrink: 0;
         }
         .speech-bubble {
             flex: 1;
             background: #fffef0;
             border-radius: 8px;
-            padding: 18px 24px;
-            font-size: 20px;
+            padding: 2.25% 3%;
+            font-size: clamp(14px, 2.5vw, 20px);
             font-weight: bold;
             color: #563e1f;
             position: relative;
@@ -215,26 +219,26 @@ height: 580px;
         .speech-bubble::before {
             content: '';
             position: absolute;
-            left: -14px;
-            top: 28px;
+            left: -3.5%;
+            top: 35%;
             width: 0;
             height: 0;
-            border: 8px solid transparent;
+            border: clamp(4px, 1vw, 8px) solid transparent;
             border-right-color: #fffef0;
         }
 
         /* 重置按钮 */
         .reset-btn {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 2.5%;
+            left: 2.5%;
             background: #b87850;
             border: 2px solid #8b5e3c;
-            padding: 12px 24px;
+            padding: 1.5% 3%;
             border-radius: 8px;
             color: white;
             font-weight: bold;
-            font-size: 18px;
+            font-size: clamp(12px, 2.25vw, 18px);
             cursor: pointer;
             z-index: 25;
             letter-spacing: 1px;
@@ -295,12 +299,12 @@ height: 580px;
 
 <script>
     
-    // 初始4个饼干坐标
+    // 初始4个饼干坐标（百分比）
     let cookies = [
-        { id: 0, state: 'raw', x: 150, y: 100, imgSrc: '右下1.png' },
-        { id: 1, state: 'raw', x: 380, y: 100, imgSrc: '左下1.png' },
-        { id: 2, state: 'raw', x: 150, y: 300, imgSrc: '左上1.png' },
-        { id: 3, state: 'raw', x: 390, y: 280, imgSrc: '右上1.png' }
+        { id: 0, state: 'raw', xPct: 21, yPct: 14, imgSrc: '右下1.png' },
+        { id: 1, state: 'raw', xPct: 54, yPct: 14, imgSrc: '左下1.png' },
+        { id: 2, state: 'raw', xPct: 21, yPct: 43, imgSrc: '左上1.png' },
+        { id: 3, state: 'raw', xPct: 55, yPct: 40, imgSrc: '右上1.png' }
     ];
 
     let gamePhase = 'arranging';   // 'arranging' , 'baking' , 'result'
@@ -335,9 +339,9 @@ height: 580px;
         cookies.forEach(cookie => {
             const cookieDiv = document.createElement('div');
             cookieDiv.className = 'cookie';
-            cookieDiv.innerHTML = '<img src="' + cookie.imgSrc + '" style="width:100%;height:100%;object-fit:cover;">';
-            cookieDiv.style.left = cookie.x + 'px';
-            cookieDiv.style.top = cookie.y + 'px';
+            cookieDiv.innerHTML = '<img src="' + encodeURI(cookie.imgSrc) + '" style="width:100%;height:100%;object-fit:cover;">';
+            cookieDiv.style.left = cookie.xPct + '%';
+            cookieDiv.style.top = cookie.yPct + '%';
             cookieDiv.setAttribute('data-id', cookie.id);
 
             // 鼠标按下 / 触摸开始：开始拖拽
@@ -347,8 +351,8 @@ height: 580px;
                 e.stopPropagation();
                 draggingId = cookie.id;
                 const trayRect = trayArea.getBoundingClientRect();
-                dragOffsetX = e.clientX - trayRect.left - cookie.x;
-                dragOffsetY = e.clientY - trayRect.top - cookie.y;
+                dragOffsetX = e.clientX - trayRect.left - (cookie.xPct / 100) * trayRect.width;
+                dragOffsetY = e.clientY - trayRect.top - (cookie.yPct / 100) * trayRect.height;
                 cookieDiv.classList.add('selected');
             });
             cookieDiv.addEventListener('touchstart', (e) => {
@@ -357,8 +361,8 @@ height: 580px;
                 draggingId = cookie.id;
                 const touch = e.touches[0];
                 const trayRect = trayArea.getBoundingClientRect();
-                dragOffsetX = touch.clientX - trayRect.left - cookie.x;
-                dragOffsetY = touch.clientY - trayRect.top - cookie.y;
+                dragOffsetX = touch.clientX - trayRect.left - (cookie.xPct / 100) * trayRect.width;
+                dragOffsetY = touch.clientY - trayRect.top - (cookie.yPct / 100) * trayRect.height;
                 cookieDiv.classList.add('selected');
             }, { passive: true });
 
@@ -372,19 +376,24 @@ height: 580px;
         const trayRect = trayArea.getBoundingClientRect();
         let newX = clientX - trayRect.left - dragOffsetX;
         let newY = clientY - trayRect.top - dragOffsetY;
-        newX = Math.min(Math.max(newX, 0), trayArea.clientWidth - 120);
-        newY = Math.min(Math.max(newY, 0), trayArea.clientHeight - 120);
+        const cookieW = trayRect.width * 0.225;
+        const cookieH = trayRect.height * 0.225;
+        newX = Math.min(Math.max(newX, 0), trayRect.width - cookieW);
+        newY = Math.min(Math.max(newY, 0), trayRect.height - cookieH);
+
+        const xPct = (newX / trayRect.width) * 100;
+        const yPct = (newY / trayRect.height) * 100;
 
         const cookie = cookies.find(c => c.id === draggingId);
         if (cookie) {
-            cookie.x = newX;
-            cookie.y = newY;
+            cookie.xPct = xPct;
+            cookie.yPct = yPct;
         }
         // 直接移动 DOM，避免整页重渲染
         const el = trayArea.querySelector('[data-id="' + draggingId + '"]');
         if (el) {
-            el.style.left = newX + 'px';
-            el.style.top = newY + 'px';
+            el.style.left = xPct + '%';
+            el.style.top = yPct + '%';
         }
     }
 
@@ -472,9 +481,9 @@ height: 580px;
             speechBubble.innerText = resultText;
             // 人物头像：完美=完美.png，烤糊/没熟=不完美.png
             if (result === 'perfect') {
-                characterDiv.innerHTML = '<img src="完美.png" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+                characterDiv.innerHTML = '<img src="' + encodeURI('完美.png') + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
             } else {
-                characterDiv.innerHTML = '<img src="不完美.png" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+                characterDiv.innerHTML = '<img src="' + encodeURI('不完美.png') + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
             }
 
             loadingOverlay.style.visibility = 'hidden';
@@ -486,10 +495,10 @@ height: 580px;
     function resetGame() {
         // 重置饼干数据
         cookies = [
-            { id: 0, state: 'raw', x: 100, y: 80, imgSrc: '右下1.png' },
-            { id: 1, state: 'raw', x: 400, y: 100, imgSrc: '左下1.png' },
-            { id: 2, state: 'raw', x: 150, y: 300, imgSrc: '左上1.png' },
-            { id: 3, state: 'raw', x: 420, y: 320, imgSrc: '右上1.png' }
+            { id: 0, state: 'raw', xPct: 14, yPct: 10, imgSrc: '右下1.png' },
+            { id: 1, state: 'raw', xPct: 57, yPct: 14, imgSrc: '左下1.png' },
+            { id: 2, state: 'raw', xPct: 21, yPct: 43, imgSrc: '左上1.png' },
+            { id: 3, state: 'raw', xPct: 60, yPct: 46, imgSrc: '右上1.png' }
         ];
         selectedCookieId = null;
         gamePhase = 'arranging';

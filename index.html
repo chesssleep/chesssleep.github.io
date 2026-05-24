@@ -285,7 +285,7 @@ height: 580px;
 
 <script>
 
-    // 初始4个饼干坐标
+    // 初始饼干
     let cookies = [
         { id: 0, state: 'raw', x: 150, y: 100, imgSrc: '右下1.png' },
         { id: 1, state: 'raw', x: 380, y: 100, imgSrc: '左下1.png' },
@@ -317,7 +317,6 @@ height: 580px;
     let dragOffsetX = 0;
     let dragOffsetY = 0;
 
-    // 辅助：重新渲染所有饼干（带拖拽）
     function renderCookies() {
         const existingCookies = document.querySelectorAll('.cookie');
         existingCookies.forEach(c => c.remove());
@@ -330,7 +329,6 @@ height: 580px;
             cookieDiv.style.top = cookie.y + 'px';
             cookieDiv.setAttribute('data-id', cookie.id);
 
-            // 鼠标按下 / 触摸开始：开始拖拽
             cookieDiv.addEventListener('mousedown', (e) => {
                 if (gamePhase !== 'arranging') return;
                 e.preventDefault();
@@ -356,7 +354,6 @@ height: 580px;
         });
     }
 
-    // 鼠标移动 / 触摸移动：拖拽中
     function onDragMove(clientX, clientY) {
         if (draggingId === null) return;
         const trayRect = trayArea.getBoundingClientRect();
@@ -370,7 +367,6 @@ height: 580px;
             cookie.x = newX;
             cookie.y = newY;
         }
-        // 直接移动 DOM，避免整页重渲染
         const el = trayArea.querySelector('[data-id="' + draggingId + '"]');
         if (el) {
             el.style.left = newX + 'px';
@@ -385,7 +381,6 @@ height: 580px;
         }
     }, { passive: true });
 
-    // 鼠标松开 / 触摸结束：结束拖拽
     function onDragEnd() {
         if (draggingId !== null) {
             const el = trayArea.querySelector('[data-id="' + draggingId + '"]');
@@ -396,14 +391,10 @@ height: 580px;
     document.addEventListener('mouseup', onDragEnd);
     document.addEventListener('touchend', onDragEnd);
 
-
-
-
-
     // 火力条移动
     function startFireMoving() {
         if (animationId) cancelAnimationFrame(animationId);
-        let pos = 20; // 初始中间区域
+        let pos = 20; 
         needleDirection = 1;
         function step() {
             if (gamePhase !== 'baking' || fireBarContainer.style.visibility === 'hidden') return;
@@ -417,19 +408,15 @@ height: 580px;
         animationId = requestAnimationFrame(step);
     }
 
-    // 停止指针移动并判定火力结果
     function stopAndJudge() {
         if (gamePhase !== 'baking') return;
-        // 取消移动动画
         if (animationId) {
             cancelAnimationFrame(animationId);
             animationId = null;
         }
-        // 显示loading
         loadingOverlay.style.visibility = 'visible';
 
         setTimeout(() => {
-            // 根据火力值判定结果 (红:0-33 绿:33-66 白66-100)
             let result = '';
             let resultText = '';
             if (currentFirePos >= 0 && currentFirePos < 33) {
@@ -442,8 +429,6 @@ height: 580px;
                 result = 'undercooked';
                 resultText = '好像还没熟......';
             }
-            // 改变所有饼干状态(换图片)
-            // 每个饼干对应: X1=没熟, X2=完美, X3=烤糊
             const posPrefix = ['右下', '左下', '左上', '右上'];
             const suffixMap = { undercooked: '1', perfect: '2', burnt: '3' };
             cookies.forEach(c => {
@@ -451,11 +436,8 @@ height: 580px;
                 c.imgSrc = posPrefix[c.id] + suffixMap[result] + '.png';
             });
             renderCookies();
-
-            // 显示对话框和人物区
             dialogueArea.style.visibility = 'visible';
             speechBubble.innerText = resultText;
-            // 人物头像：完美=完美.png，烤糊/没熟=不完美.png
             if (result === 'perfect') {
                 characterDiv.innerHTML = '<img src="完美.png" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
             } else {
@@ -469,7 +451,6 @@ height: 580px;
 
     // 重置游戏
     function resetGame() {
-        // 重置饼干数据
         cookies = [
             { id: 0, state: 'raw', x: 100, y: 80, imgSrc: '右下1.png' },
             { id: 1, state: 'raw', x: 400, y: 100, imgSrc: '左下1.png' },
@@ -479,9 +460,7 @@ height: 580px;
         selectedCookieId = null;
         gamePhase = 'arranging';
         if (animationId) cancelAnimationFrame(animationId);
-        // 重置人物头像
         characterDiv.innerHTML = '🐻‍❄️';
-        // 隐藏火力条、对话框、loading
         fireBarContainer.style.visibility = 'hidden';
         dialogueArea.style.visibility = 'hidden';
         loadingOverlay.style.visibility = 'hidden';
@@ -490,37 +469,35 @@ height: 580px;
         renderCookies();
     }
 
-    // 确认摆盘 => 切换烘焙阶段
+
     function onConfirmArrange() {
         if (gamePhase !== 'arranging') return;
         gamePhase = 'baking';
-        confirmBtn.style.visibility = 'hidden';   // 确认键消失
+        confirmBtn.style.visibility = 'hidden';   
         fireBarContainer.style.visibility = 'visible';
-        // 重置火力指针位置
+
         currentFirePos = 35;
         needle.style.top = '35%';
-        startFireMoving();  // 指针开始上下移动
+        startFireMoving();  
 
-        // 监听点击屏幕任意位置 (但避免点到按钮冲突)
+
         const bakeHandler = (e) => {
             if (gamePhase === 'baking') {
                 stopAndJudge();
                 document.removeEventListener('click', bakeHandler);
             }
         };
-        // 延迟一点点加监听，防止当前按钮冒泡直接触发
+
         setTimeout(() => {
             document.addEventListener('click', bakeHandler);
         }, 50);
     }
-
-    // 事件绑定
+    
     confirmBtn.addEventListener('click', onConfirmArrange);
     resetBtn.addEventListener('click', resetGame);
 
-    // 初始化渲染
     renderCookies();
-    // 其他预备: 保证托盘区域相对定位
+
     trayArea.style.position = 'relative';
     trayArea.style.pointerEvents = 'auto';
 </script>
